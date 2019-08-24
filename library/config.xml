@@ -4,7 +4,7 @@
   <rule_list>
 
 	<rule>
- 	 	<function name="git_repository_open">
+ 		<function name="git_repository_open">
 		 	<parameter name="out"/>
 	 	</function>
 	 </rule>
@@ -103,6 +103,85 @@
       </wrapper>
     </rule>
 
+    <!-- The next rule specify the git_signature definitions to be wrapped -->
+    <rule>
+      <match>
+	 <identifier name="git_signature"/>
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
+    <!-- The next rule specify the git_signature functions definitions to be wrapped -->
+    <rule>
+      <match>
+	<identifier name="git_signature_.*"/>
+	<type name="function"/>	
+      </match>
+       <wrapper type="default">
+	<class_name name="GIT_SIGNATURE"/>	
+      </wrapper>
+    </rule>
+
+
+    <!-- The next rule specify the git_index definitions to be wrapped -->
+    <rule>
+      <match>
+	 <identifier name="git_index"/>
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
+
+    <!-- The next rule specify the git_index functions definitions to be wrapped -->
+    <rule>
+      <match>
+	 <identifier name="git_index_.*"/>
+	 <type name="function"/>	
+      </match>
+       <wrapper type="default">
+	 <class_name name="GIT_INDEX"/>	
+      </wrapper>
+    </rule>
+
+    <!-- The next rule specify the git_oid definitions to be wrapped -->
+    <rule>
+      <match>
+	 <identifier name="git_oid"/>
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
+
+    <!-- The next rule specify the git_tree definitions to be wrapped -->
+    <rule>
+      <match>
+	 <identifier name="git_tree"/>
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
+ 
+    <!-- The next rule specify the git_tree functions definitions to be wrapped -->
+    <rule>
+      <match>
+	 <identifier name="git_tree_.*"/>
+	 <type name="function"/>	
+      </match>
+       <wrapper type="default">
+	 <class_name name="GIT_TREE"/>	
+      </wrapper>
+    </rule>
+	
+   <!-- The next rule specify the git_commit functions definitions to be wrapped -->
+    <rule>
+      <match>
+	 <identifier name="git_commit_.*"/>
+	 <type name="function"/>	
+      </match>
+       <wrapper type="default">
+	 <class_name name="GIT_COMMIT"/>	
+      </wrapper>
+    </rule>
 
 
      <!-- And the rest should be ignored -->

@@ -108,8 +108,69 @@ feature -- Intiialize Repository
 			-- Unlike regular `git init` this example shows hot to create
 			-- an empty commit in the repository. This is the helper function
 			-- that does that.
+		local
+			sig: GIT_SIGNATURE_STRUCT_API
+			index: GIT_INDEX_STRUCT_API
+			tree_id, commit_id: GIT_OID_STRUCT_API
+			tree: GIT_TREE_STRUCT_API
+			signature: GIT_SIGNATURE
+			gitindex: GIT_INDEX
+			gittree: GIT_TREE
+			gitcommit: GIT_COMMIT
+
 		do
-			-- To implement.
+			create signature
+			create sig.make
+			create index.make
+			create gitindex
+			create gittree
+
+				-- First use the config to initialize a commit signature for the user.		
+			if signature.git_signature_default (sig, a_repo) < 0 then
+				print ("%N Unable to create a commit signature.%NPherhaps 'user.name' and 'user.email' are not set")
+				{EXCEPTIONS}.die (1)
+			end
+
+				-- 	Now	let's create an empty tree for this commit
+
+			if grepository.git_repository_index (index, a_repo) < 0 then
+				print ("%N Could not open repository index%N")
+				{EXCEPTIONS}.die (1)
+			end
+
+				-- Outside of this example, you could call git_index_add_bypath
+				-- here to put actial files into the index. For our purposes, we'll
+			 	-- leave it empty for now.
+
+			create tree_id.make
+			if gitindex.git_index_write_tree (tree_id, index) < 0 then
+				print ("%NUnable to write initial tree from index%N")
+				{EXCEPTIONS}.die (1)
+			end
+
+			gitindex.git_index_free (index)
+
+			create tree.make
+			if gittree.git_tree_lookup (tree, a_repo, tree_id) < 0 then
+				print ("%N Could not look up initial tree%N")
+				{EXCEPTIONS}.die (1)
+			end
+				-- Ready to create initial commit
+				--
+				-- Normally creating a commit would involve looking up the current
+				-- Head commit and making that be the parent of the initial commmit
+				-- but here this is the first commit so there will be no parent.
+
+			create commit_id.make
+			create gitcommit
+			if gitcommit.git_commit_create_v (commit_id,
+						a_repo, "HEAD", sig, sig, Void, "Initial commmit", tree, 0) < 0
+			then
+				print ("Could not create the initial commit")
+				{EXCEPTIONS}.die (1)
+			end
+			gittree.git_tree_free (tree)
+			signature.git_signature_free (sig)
 		end
 
 
@@ -185,7 +246,7 @@ feature	{NONE} -- Process Arguments
 		do
 			str := "[
 				%N
-				init [--q] [--bare] [--template=<dir>]
+				git_init [--q] [--bare] [--template=<dir>]
 					 [--shared[=perms]] [--initial-commit]
 					 [--separate-git-dir] <directory>
 					 ]"
@@ -197,4 +258,5 @@ feature -- Options
 
 	options: OPTIONS
 	grepository: LIBGIT2_REPOSITORY
+
 end
