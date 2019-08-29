@@ -52,7 +52,6 @@ feature {NONE} -- Events
 			end
 		end
 
-
 feature -- Test routines
 
 	test_clone

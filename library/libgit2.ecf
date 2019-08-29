@@ -14,7 +14,7 @@
 				<platform value="windows"/>
 			</condition>
 		</external_include>
-		<external_include location="$ECF_CONFIG_PATH\C">
+		<external_include location="$ECF_CONFIG_PATH\C\include">
 			<condition>
 				<platform value="windows"/>
 			</condition>
@@ -27,11 +27,18 @@
 		
 		<!--  Useful when `pkg-config cflags libgit2` does not return the cflags.-->
 	
-		<external_include location="$ECF_CONFIG_PATH/C">
+		<external_include location="$ECF_CONFIG_PATH/C/include">
 			<condition>
 				<platform excluded_value="windows"/>
 			</condition>
 		</external_include>
+
+		<external_object location="$ECF_CONFIG_PATH/C/spec/$ISE_C_COMPILER/$ISE_PLATFORM/lib/git2.lib">
+			<condition>
+				<platform value="windows"/>
+			</condition>
+		</external_object>
+
 		
 		<!--		
 		<external_include location="`pkg-config --cflags libgit2`">

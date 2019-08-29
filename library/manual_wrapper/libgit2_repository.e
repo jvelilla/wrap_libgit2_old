@@ -16,7 +16,9 @@ inherit
 			git_repository_open as git_repository_open_api,
 			git_repository_open_ext as git_repository_open_ext_api,
 			git_repository_open_bare as git_repository_open_bare_api,
-			git_repository_discover as git_repository_discover_api
+			git_repository_discover as git_repository_discover_api,
+			git_repository_path as git_repository_path_api,
+			git_repository_head as git_repository_head_api
 		end
 
 feature -- Access
@@ -101,6 +103,28 @@ feature -- Access
 				l_ceiling_ptr := ceiling_dirs_c_string.item
 			end
 			Result := c_git_repository_discover (a_out.item, start_path_c_string.item, across_fs, l_ceiling_ptr)
+		end
+
+	git_repository_path (repo: GIT_REPOSITORY_STRUCT_API): STRING
+		local
+			l_ptr: POINTER
+		do
+			l_ptr := c_git_repository_path (repo.item)
+			if l_ptr /= default_pointer then
+				Result := (create {C_STRING}.make_by_pointer (l_ptr)).string
+			else
+				Result := ""
+			end
+		end
+
+	git_repository_head (a_out: GIT_REFERENCE_STRUCT_API; repo: GIT_REPOSITORY_STRUCT_API): INTEGER
+		local
+			l_ptr: POINTER
+		do
+			Result := c_git_repository_head ($l_ptr, repo.item)
+			if l_ptr /= default_pointer then
+				a_out.make_by_pointer (l_ptr)
+			end
 		end
 
 end

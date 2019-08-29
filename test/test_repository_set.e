@@ -196,6 +196,16 @@ feature -- Test routines
 		end
 
 
+	test_repository_is_bare
+		local
+			l_rep: GIT_REPOSITORY_STRUCT_API
+			error: INTEGER
+		do
+			create l_rep.make
+			error := git_repository_is_bare (l_rep)
+			assert ("Expected error code", error = 0)
+		end
+
 
 end
 

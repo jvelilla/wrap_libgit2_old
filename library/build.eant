@@ -29,7 +29,7 @@
   <target name="init_wrap_c">
     <set name="system_dir" value="${cwd}"/>
     <set name="wrap_c.library_name" value="libgit2"/>
-    <set name="wrap_c.full_header_name" value="${cwd}${path_separator}C${path_separator}git2.h"/>
+    <set name="wrap_c.full_header_name" value="${cwd}${path_separator}C${path_separator}include${path_separator}git2.h"/>
     <set name="wrap_c.use_config_file" value="True"/>
     <set name="wrap_c.verbose" value="--verbose"/>
     <set name="wrap_c.wrapper_dir" value="${system_dir}${path_separator}generated_wrapper"/>

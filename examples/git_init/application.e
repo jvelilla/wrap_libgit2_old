@@ -85,7 +85,7 @@ feature -- Intiialize Repository
 				-- Print a message to the stdout like git init does
 			if not options.quiet then
 				if options.bare or attached options.gitdir then
-					options.set_dir ((create {C_STRING}.make_by_pointer (grepository.git_repository_path (repo))).string)
+					options.set_dir (grepository.git_repository_path (repo))
 				else
 					options.set_dir ((create {C_STRING}.make_by_pointer (grepository.git_repository_workdir (repo))).string)
 				end

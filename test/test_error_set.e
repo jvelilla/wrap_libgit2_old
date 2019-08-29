@@ -19,10 +19,10 @@ inherit
 		rename
 			default_create as defaul_create_lg
 		end
---	LIBGIT2_ERROR_API
---		rename
---			default_create as defaul_create_er
---		end
+	LIBGIT2_ERROR_API
+		rename
+			default_create as defaul_create_er
+		end
 
 feature -- Test routines
 
@@ -37,9 +37,9 @@ feature -- Test routines
 			create l_rep.make
 			l_error := git_repository_open (l_rep, "")
 			assert ("Error < 0", l_error < 0)
---			if attached {GIT_ERROR_STRUCT_API} git_error_last as l_gerror then
---				print ("%NMessage: " + l_gerror.message)
---			end
+			if attached {GIT_ERROR_STRUCT_API} git_error_last as l_gerror then
+				print ("%NMessage: " + if attached l_gerror.message as l_message then l_message else "" end)
+			end
 		end
 
 end

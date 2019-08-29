@@ -3,15 +3,13 @@
 
   <rule_list>
 
-	<rule>
- 		<function name="git_repository_open">
-		 	<parameter name="out"/>
-	 	</function>
+	<!--<rule>
+ 		<function_exclude name="">
 	 </rule>
 
 	 <rule>
 	 	<function_address name="git_repository_open"/>
-	 </rule>
+	 </rule> -->
 		
     <!-- Ignore everything that starts with an underscore. -->
     <rule>
@@ -182,6 +180,80 @@
 	 <class_name name="GIT_COMMIT"/>	
       </wrapper>
     </rule>
+
+
+    <!-- The next rule specify the git_status functions definitions to be wrapped -->
+    <rule>
+      <match>
+	 <identifier name="git_status_.*"/>
+	 <type name="function"/>	
+      </match>
+       <wrapper type="default">
+	 <class_name name="GIT_STATUS"/>	
+      </wrapper>
+    </rule>
+
+    <!-- The next rule specify the git_status functions definitions to be wrapped -->
+    <rule>
+      <match>
+	 <identifier name="git_status.*"/>
+	  </match>
+       <wrapper type="default">
+	  </wrapper>
+    </rule>
+
+ <!-- The next rule specify the git_reference functions definitions to be wrapped -->
+    <rule>
+      <match>
+   <identifier name="git_reference_.*"/>
+   <type name="function"/>  
+      </match>
+       <wrapper type="default">
+        <class_name name="GIT_REFERENCE"/>  
+      </wrapper>
+    </rule>
+
+   <!-- The next rule specify the git_submodule functions definitions to be wrapped -->
+    <rule>
+      <match>
+      <identifier name="git_submodule_.*"/>
+      <type name="function"/>  
+      </match>
+       <wrapper type="default">
+       <class_name name="GIT_REFERENCE"/>  
+      </wrapper>
+    </rule>
+
+    <!-- The next rule specify the git_reference functions definitions to be wrapped -->
+    <rule>
+      <match>
+       <identifier name="git_submodule"/>
+       <type name="struct"/>  
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
+
+ <!-- The next rule specify the git_diff_file struct definitions to be wrapped -->
+    <rule>
+      <match>
+          <identifier name="git_diff_file"/>
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
+
+
+ <!-- The next rule specify the git_diff_delta struct definitions to be wrapped -->
+    <rule>
+      <match>
+          <identifier name="git_diff_delta"/>
+      ]</match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
+
+
 
 
      <!-- And the rest should be ignored -->
