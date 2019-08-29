@@ -19,10 +19,10 @@ inherit
 		rename
 			default_create as defaul_create_lg
 		end
-	LIBGIT2_ERROR_API
-		rename
-			default_create as defaul_create_er
-		end
+--	LIBGIT2_ERROR_API  -- At the moment libgit version 0.28.3 report undefined reference to `git_error_clear', `git_error_set_oom', `git_error_last', `git_error_set_str'
+--		rename
+--			default_create as defaul_create_er
+--		end
 
 feature -- Test routines
 
@@ -37,9 +37,11 @@ feature -- Test routines
 			create l_rep.make
 			l_error := git_repository_open (l_rep, "")
 			assert ("Error < 0", l_error < 0)
-			if attached {GIT_ERROR_STRUCT_API} git_error_last as l_gerror then
-				print ("%NMessage: " + if attached l_gerror.message as l_message then l_message else "" end)
-			end
+-- TODO check
+-- Issue with version 0.28.3 on Linux.			
+--			if attached {GIT_ERROR_STRUCT_API} git_error_last as l_gerror then
+--				print ("%NMessage: " + if attached l_gerror.message as l_message then l_message else "" end)
+--			end
 		end
 
 end

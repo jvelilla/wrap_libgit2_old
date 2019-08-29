@@ -96,7 +96,6 @@ feature {NONE} --Initialization
 			error: INTEGER
 			branch: STRING
 			git_reference: GIT_REFERENCE
-			l_ptr: POINTER
 		do
 			create git_reference
 			create head.make
@@ -121,8 +120,6 @@ feature	{NONE} -- Process Arguments
 
 	process_arguments
 			-- Process command line arguments
-		local
-			shared_value: STRING
 		do
 
 			if match_long_option ("short") then
@@ -204,7 +201,6 @@ feature -- Print
 		local
 			git_status: GIT_STATUS
 			maxi: INTEGER
-			s: GIT_STATUS_ENTRY_STRUCT_API
 			changed_in_index: BOOLEAN
 			header: BOOLEAN
 			changed_in_workdir, rm_in_workdir: BOOLEAN
@@ -219,58 +215,59 @@ feature -- Print
 				-- Print index changes
 			across 1 |..| maxi as ic loop
 				create is_status.make_empty
-				s := git_status.git_status_byindex (a_status, ic.item - 1)
-				if s.status = {GIT_STATUS_T_ENUM_API}.Git_Status_current then
-					continue := True
-				end
-				if (s.status & {GIT_STATUS_T_ENUM_API}.git_status_wt_deleted) /= 0  and not continue then
-					rm_in_workdir := True
-				end
-				if (s.status & {GIT_STATUS_T_ENUM_API}.git_status_index_new) /= 0 and not continue  then
-					is_status.append ("new file: ")
-				end
-				if (s.status & {GIT_STATUS_T_ENUM_API}.git_status_index_modified) /= 0 and not continue  then
-					is_status.append ("modified: ")
-				end
-				if (s.status & {GIT_STATUS_T_ENUM_API}.git_status_index_deleted) /= 0 and not continue  then
-					is_status.append ("deleted: ")
-				end
-				if (s.status & {GIT_STATUS_T_ENUM_API}.git_status_index_renamed) /= 0 and not continue  then
-					is_status.append ("renamed: ")
-				end
-				if (s.status & {GIT_STATUS_T_ENUM_API}.git_status_index_typechange) /= 0 and not continue  then
-					is_status.append ("typechange: ")
-				end
-				if is_status.is_empty then
-					continue := True
-				end
+				if attached {GIT_STATUS_ENTRY_STRUCT_API} git_status.git_status_byindex (a_status, ic.item - 1) as s then
+					if s.status = {GIT_STATUS_T_ENUM_API}.Git_Status_current then
+						continue := True
+					end
+					if (s.status & {GIT_STATUS_T_ENUM_API}.git_status_wt_deleted) /= 0  and not continue then
+						rm_in_workdir := True
+					end
+					if (s.status & {GIT_STATUS_T_ENUM_API}.git_status_index_new) /= 0 and not continue  then
+						is_status.append ("new file: ")
+					end
+					if (s.status & {GIT_STATUS_T_ENUM_API}.git_status_index_modified) /= 0 and not continue  then
+						is_status.append ("modified: ")
+					end
+					if (s.status & {GIT_STATUS_T_ENUM_API}.git_status_index_deleted) /= 0 and not continue  then
+						is_status.append ("deleted: ")
+					end
+					if (s.status & {GIT_STATUS_T_ENUM_API}.git_status_index_renamed) /= 0 and not continue  then
+						is_status.append ("renamed: ")
+					end
+					if (s.status & {GIT_STATUS_T_ENUM_API}.git_status_index_typechange) /= 0 and not continue  then
+						is_status.append ("typechange: ")
+					end
+					if is_status.is_empty then
+						continue := True
+					end
 
-				if not header then
-					print("%N# Changes to be committed:%N")
-					print("%N#(use %"git reset HEAD <file>...%" to unstage)%N")
-					print("%N#%N");
-					header := True
-				end
+					if not header then
+						print("%N# Changes to be committed:%N")
+						print("%N#(use %"git reset HEAD <file>...%" to unstage)%N")
+						print("%N#%N");
+						header := True
+					end
 
-				if attached s.head_to_index as l_head_to_index and then
-					attached l_head_to_index.old_file as l_old_file
-				then
-					old_path := l_old_file.path
-				end
+					if attached s.head_to_index as l_head_to_index and then
+						attached l_head_to_index.old_file as l_old_file
+					then
+						old_path := l_old_file.path
+					end
 
-				if attached s.head_to_index as l_head_to_index and then
-					attached l_head_to_index.new_file as l_new_file
-				then
-					new_path := l_new_file.path
-				end
+					if attached s.head_to_index as l_head_to_index and then
+						attached l_head_to_index.new_file as l_new_file
+					then
+						new_path := l_new_file.path
+					end
 
-				if old_path /= Void and then new_path  /= Void and then old_path.is_case_insensitive_equal_general (new_path) then
-					print ("%N%T" + is_status + " " + old_path + " -> " + new_path )
-				else
-					if old_path /= Void and then old_path.is_empty then
-						print ("%N%T" + is_status + " " + if attached new_path then new_path else "" end)
+					if old_path /= Void and then new_path  /= Void and then old_path.is_case_insensitive_equal_general (new_path) then
+						print ("%N%T" + is_status + " " + old_path + " -> " + new_path )
 					else
-						print ("%N%T" + is_status + " " + if attached old_path then old_path else "" end)
+						if old_path /= Void and then old_path.is_empty then
+							print ("%N%T" + is_status + " " + if attached new_path then new_path else "" end)
+						else
+							print ("%N%T" + is_status + " " + if attached old_path then old_path else "" end)
+						end
 					end
 				end
 			end
@@ -286,55 +283,56 @@ feature -- Print
 
 			across 1 |..| maxi as ic loop
 				create ws_status.make_empty
-				s := git_status.git_status_byindex (a_status, ic.item - 1)
-					--
-					--	With `GIT_STATUS_OPT_INCLUDE_UNMODIFIED` (not used in this example)
-					--	`index_to_workdir` may not be `NULL` even if there are
-					--	 no differences, in which case it will be a `GIT_DELTA_UNMODIFIED`.
-					--
-				if s.status ={GIT_STATUS_T_ENUM_API}.git_status_current or (attached s.index_to_workdir as l_index_to_workdir and then l_index_to_workdir.item = default_pointer) then
-					continue := True
-				end
-
-					-- Print out the output since we know the file has some changes
-				if s.status = {GIT_STATUS_T_ENUM_API}.git_status_wt_modified and not continue then
-					ws_status := "modified: "
-				end
-				if s.status = {GIT_STATUS_T_ENUM_API}.git_status_wt_deleted and not continue then
-					ws_status := "deleted: "
-				end
-				if s.status = {GIT_STATUS_T_ENUM_API}.git_status_wt_renamed and not continue then
-					ws_status := "renamed: "
-				end
-				if s.status = {GIT_STATUS_T_ENUM_API}.git_status_index_typechange and not continue then
-					ws_status := "typechange: "
-				end
-				if ws_status.is_empty then
-					continue := True
-				end
-
-				if not header then
-					print("# Changes not staged for commit:%N");
-					if rm_in_workdir = 1 then
-						print ("# (use %"git add /rm <file>...%" to update what will be committed)%N")
-					else
-						print ("# (use %"git add <file>...%" to update what will be committed)%N")
+				if attached {GIT_STATUS_ENTRY_STRUCT_API} git_status.git_status_byindex (a_status, ic.item - 1) as s then
+						--
+						--	With `GIT_STATUS_OPT_INCLUDE_UNMODIFIED` (not used in this example)
+						--	`index_to_workdir` may not be `NULL` even if there are
+						--	 no differences, in which case it will be a `GIT_DELTA_UNMODIFIED`.
+						--
+					if s.status ={GIT_STATUS_T_ENUM_API}.git_status_current or (attached s.index_to_workdir as l_index_to_workdir and then l_index_to_workdir.item = default_pointer) then
+						continue := True
 					end
-					print ("# (use %"git checkout -- <file>...%" to discard changes in working directory)%N")
-					print ("#%N");
-					header := True
-				end
 
-				if attached s.head_to_index as l_head_to_index and then
-					attached l_head_to_index.old_file as l_old_file
-				then
-					old_path := l_old_file.path
-				end
+						-- Print out the output since we know the file has some changes
+					if s.status = {GIT_STATUS_T_ENUM_API}.git_status_wt_modified and not continue then
+						ws_status := "modified: "
+					end
+					if s.status = {GIT_STATUS_T_ENUM_API}.git_status_wt_deleted and not continue then
+						ws_status := "deleted: "
+					end
+					if s.status = {GIT_STATUS_T_ENUM_API}.git_status_wt_renamed and not continue then
+						ws_status := "renamed: "
+					end
+					if s.status = {GIT_STATUS_T_ENUM_API}.git_status_index_typechange and not continue then
+						ws_status := "typechange: "
+					end
+					if ws_status.is_empty then
+						continue := True
+					end
 
-				if attached s.head_to_index as l_head_to_index and then
-					attached l_head_to_index.new_file as l_new_file
-				then
-					new_path := l_new_file.path
+					if not header then
+						print("# Changes not staged for commit:%N");
+						if rm_in_workdir  then
+							print ("# (use %"git add /rm <file>...%" to update what will be committed)%N")
+						else
+							print ("# (use %"git add <file>...%" to update what will be committed)%N")
+						end
+						print ("# (use %"git checkout -- <file>...%" to discard changes in working directory)%N")
+						print ("#%N");
+						header := True
+					end
+
+					if attached s.head_to_index as l_head_to_index and then
+						attached l_head_to_index.old_file as l_old_file
+					then
+						old_path := l_old_file.path
+					end
+
+					if attached s.head_to_index as l_head_to_index and then
+						attached l_head_to_index.new_file as l_new_file
+					then
+						new_path := l_new_file.path
+					end
 				end
 			end
 
@@ -346,30 +344,32 @@ feature -- Print
 				-- Print untracked files.
 			header := False
 			across 1 |..| maxi as ic loop
-				s := git_status.git_status_byindex (a_status, ic.item - 1)
-				if s.status = {GIT_STATUS_T_ENUM_API}.git_status_wt_new then
-					if not header then
-						print("# Untracked files:%N");
-						print("# (use %"git add <file>...%" to include in what will be committed)%N");
-						print("#%N");
-						header := True;
+				if attached {GIT_STATUS_ENTRY_STRUCT_API} git_status.git_status_byindex (a_status, ic.item - 1) as s then
+					if s.status = {GIT_STATUS_T_ENUM_API}.git_status_wt_new then
+						if not header then
+							print("# Untracked files:%N");
+							print("# (use %"git add <file>...%" to include in what will be committed)%N");
+							print("#%N");
+							header := True;
+						end
+						print("#%T" + if attached s.index_to_workdir as l_index_workdir and then attached l_index_workdir.old_file as l_old_file and then attached l_old_file.path as l_path then l_path else "" end + "%N")
 					end
-					print("#%T" + if attached s.index_to_workdir as l_index_workdir and then attached l_index_workdir.old_file as l_old_file and then attached l_old_file.path as l_path then l_path else "" end + "%N")
 				end
 			end
 
 			header := False
 			--	Print ignored files.
 			across 1 |..| maxi as ic loop
-				s := git_status.git_status_byindex (a_status, ic.item - 1)
-				if s.status = {GIT_STATUS_T_ENUM_API}.git_status_ignored then
-					if not header then
-						print("# Ignored files:%N");
-						print("# (use %"git add <file>...%" to include in what will be committed)%N");
-						print("#%N");
-						header := True;
+				if attached {GIT_STATUS_ENTRY_STRUCT_API} git_status.git_status_byindex (a_status, ic.item - 1) as s then
+					if s.status = {GIT_STATUS_T_ENUM_API}.git_status_ignored then
+						if not header then
+							print("# Ignored files:%N");
+							print("# (use %"git add <file>...%" to include in what will be committed)%N");
+							print("#%N");
+							header := True;
+						end
+						print("#%T" + if attached s.index_to_workdir as l_index_workdir and then attached l_index_workdir.old_file as l_old_file and then attached l_old_file.path as l_path then l_path else "" end)
 					end
-					print("#%T" + if attached s.index_to_workdir as l_index_workdir and then attached l_index_workdir.old_file as l_old_file and then attached l_old_file.path as l_path then l_path else "" end)
 				end
 			end
 

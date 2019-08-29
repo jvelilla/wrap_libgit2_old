@@ -32,7 +32,7 @@
 				<platform excluded_value="windows"/>
 			</condition>
 		</external_include>
-
+	
 		<external_object location="$ECF_CONFIG_PATH/C/lib/git2.lib">
 			<condition>
 				<platform value="windows"/>
@@ -47,11 +47,13 @@
 			</condition>
 		</external_include>
 		-->
+
 		<external_object location="$ECF_CONFIG_PATH/C/spec/$ISE_C_COMPILER/$ISE_PLATFORM/lib/eif_libgit2.lib">
 			<condition>
 				<platform value="windows"/>
 			</condition>
 		</external_object>
+
 		<external_object location="$ECF_CONFIG_PATH/C/spec/$(ISE_PLATFORM)/lib/eif_libgit2.a">
 			<condition>
 				<platform excluded_value="windows"/>
