@@ -1,0 +1,1 @@
+Directory to hold the C library .lib file used by the Eiffel configuration file.

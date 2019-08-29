@@ -33,7 +33,7 @@
 			</condition>
 		</external_include>
 
-		<external_object location="$ECF_CONFIG_PATH/C/spec/$ISE_C_COMPILER/$ISE_PLATFORM/lib/git2.lib">
+		<external_object location="$ECF_CONFIG_PATH/C/lib/git2.lib">
 			<condition>
 				<platform value="windows"/>
 			</condition>
