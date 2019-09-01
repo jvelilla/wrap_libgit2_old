@@ -19,10 +19,10 @@ inherit
 		rename
 			default_create as defaul_create_lg
 		end
---	LIBGIT2_ERROR_API  -- At the moment libgit version 0.28.3 report undefined reference to `git_error_clear', `git_error_set_oom', `git_error_last', `git_error_set_str'
---		rename
---			default_create as defaul_create_er
---		end
+	LIBGIT2_ERROR_API  -- At the moment libgit version 0.28.3 report undefined reference to `git_error_clear', `git_error_set_oom', `git_error_last', `git_error_set_str'
+		rename
+			default_create as defaul_create_er
+		end
 
 feature -- Test routines
 

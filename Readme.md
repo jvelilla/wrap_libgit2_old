@@ -1,4 +1,3 @@
-
 # Wrap_libgit2 
 `Wrap_libgit2` is an Eiffel binding of [libgit2](https://libgit2.org/) C library
 using [WrapC](https://github.com/eiffel-wrap-c/WrapC) tool.
@@ -22,6 +21,13 @@ Tested on Linux and Windows 64 bits.
 
 [Guide to linking libgit2](https://libgit2.org/docs/guides/build-and-link/) on various platforms
 
+On Linux to install version 0.28.3 you will need to do the following. 
+
+	$ mkdir build
+	$ cd build
+	$ cmake ..
+	$ sudo cmake --build . --target install
+ 
 Optionally you can use [vckpg](https://github.com/Microsoft/vcpkg), a C++ Library Manager for Windows, Linux, and MacOS.
 
 Windows example
@@ -33,6 +39,7 @@ Linux example
 ```
 	./vcpkg install libgit2:x64-linux
 ```
+
 
 
 
