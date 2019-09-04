@@ -11,7 +11,9 @@ inherit
 
 	GIT_COMMIT_API
 		rename
-			git_commit_create_v as git_commit_create_v_api
+			git_commit_create_v as git_commit_create_v_api,
+			git_commit_lookup as git_commit_lookup_api
+
 		end
 
 
@@ -35,6 +37,17 @@ feature -- Access
 			Result := c_git_commit_create_v ($l_ptr, repo.item, update_ref_c_string.item, author.item, committer.item, l_msg_encoding, message_c_string.item, tree.item, parent_count)
 			if l_ptr /= default_pointer then
 				id.make_by_pointer (l_ptr)
+			end
+		end
+
+
+	git_commit_lookup (commit: GIT_COMMIT_STRUCT_API; repo: GIT_REPOSITORY_STRUCT_API; id: GIT_OID_STRUCT_API): INTEGER
+		local
+			l_ptr: POINTER
+		do
+			Result := c_git_commit_lookup ($l_ptr, repo.item, id.item)
+			if l_ptr /= default_pointer then
+				commit.make_by_pointer (l_ptr)
 			end
 		end
 

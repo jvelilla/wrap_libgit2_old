@@ -253,10 +253,138 @@
       </wrapper>
     </rule>
 
+  <!-- The next rule specify the git_filemode enum definitions to be wrapped -->
+    <rule>
+      <match>
+          <identifier name="git_filemode_t.*"/>
+          <type name="enum"/>  
+      ]</match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
 
+  <!-- The next rule specify the git submodule ignore enum definitions to be wrapped -->
+    <rule>
+      <match>
+          <identifier name="git_submodule_ignore_t"/>
+          <type name="enum"/>  
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
 
+  <!-- The next rule specify the git submodule status enum definitions to be wrapped -->
+    <rule>
+      <match>
+          <identifier name="git_submodule_status_t"/>
+          <type name="enum"/>  
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
 
-     <!-- And the rest should be ignored -->
+   <!-- The next rule specify the git repository state enum definitions to be wrapped -->
+    <rule>
+      <match>
+          <identifier name="git_repository_state.*"/>
+          <type name="enum"/>  
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule> 
+
+    <!-- The next rule specify the git submodule callback -->
+    <rule>
+      <match>
+          <identifier name="git_submodule_cb"/>
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule> 
+
+    <!-- The next rule specify the git annotated commit functions-->
+    <rule>
+      <match>
+          <identifier name="git_annotated_commit.*"/>
+          <type name="function"/>  
+      </match>
+      <wrapper type="default">
+          <class_name name="GIT_ANNOTATED_COMMIT"/>  
+      </wrapper>
+    </rule> 
+
+    <!-- The next rule specify the git revparse functions-->
+    <rule>
+      <match>
+          <identifier name="git_revparse_.*"/>
+          <type name="function"/>  
+      </match>
+      <wrapper type="default">
+          <class_name name="GIT_REVPARSE"/>  
+      </wrapper>
+    </rule> 
+
+    <!-- The next rule specify the git object functions-->
+    <rule>
+      <match>
+          <identifier name="git_object_.*"/>
+          <type name="function"/>  
+      </match>
+      <wrapper type="default">
+          <class_name name="GIT_OBJECT"/>  
+      </wrapper>
+    </rule> 
+
+    <!-- The next rule specify the git checkout behaviors flags-->
+    <rule>
+      <match>
+          <identifier name="git_checkout_strategy_t"/>
+          <type name="enum"/>  
+      </match>
+      <wrapper type="default">
+      </wrapper>
+    </rule> 
+
+    <!-- The next rule specify the Checkout progress notification function  -->
+    <rule>
+      <match>
+          <identifier name="git_checkout_progress_cb"/>
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule> 
+
+    <!-- The next rule specify the Checkout perfdata notification function  -->
+    <rule>
+      <match>
+          <identifier name="git_checkout_perfdata_cb"/>
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule> 
+
+    <!-- The next rule specify the Checkout perfdata notification function  -->
+    <rule>
+      <match>
+          <identifier name="git_checkout_perfdata"/>
+          <type name="struct"/>  
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule> 
+
+    <!-- The next rule specify the Checkout functions  -->
+    <rule>
+      <match>
+          <identifier name="git_checkout_.*"/>
+          <type name="function"/>  
+      </match>
+       <wrapper type="default">
+          <class_name name="GIT_CHECKOUT"/>  
+      </wrapper>
+    </rule> 
+ 
+    <!-- And the rest should be ignored -->
     <rule>
       <match>
       </match>
