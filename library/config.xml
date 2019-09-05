@@ -382,7 +382,89 @@
        <wrapper type="default">
           <class_name name="GIT_CHECKOUT"/>  
       </wrapper>
+    </rule>
+
+    <!-- The next rule specify the Oid functions  -->
+    <rule>
+      <match>
+          <identifier name="git_oid_.*"/>
+          <type name="function"/>  
+      </match>
+       <wrapper type="default">
+          <class_name name="GIT_OID"/>  
+      </wrapper>
     </rule> 
+
+    <!-- The next rule specify the Blob functions  -->
+    <rule>
+      <match>
+          <identifier name="git_blob_.*"/>
+          <type name="function"/>  
+      </match>
+       <wrapper type="default">
+          <class_name name="GIT_BLOB"/>  
+      </wrapper>
+    </rule>
+
+    <!-- The next rule specify the git_blob_filter_flag_t Flags to control the functionality of `git_blob_filter`. -->
+    <rule>
+      <match>
+          <identifier name="git_blob_filter_flag_t"/>
+          <type name="enum"/>  
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>  
+
+        <!-- The next rule specify the In-memory representation of a blob object. . -->
+    <rule>
+      <match>
+          <identifier name="git_blob"/>
+          <type name="struct"/>  
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>  
+
+    <!-- The next rule specify the Tag functions  -->
+    <rule>
+      <match>
+          <identifier name="git_tag_.*"/>
+          <type name="function"/>  
+      </match>
+       <wrapper type="default">
+          <class_name name="GIT_TAG"/>  
+      </wrapper>
+    </rule>
+
+    <!-- The next rule specify the Parsed representation of a tag object.   -->
+    <rule>
+      <match>
+          <identifier name="git_tag"/>
+          <type name="struct"/>  
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
+
+    <!-- The next rule specify the Callback used to iterate over tag names -->
+    <rule>
+      <match>
+          <identifier name="git_tag_foreach_cb"/>
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
+
+    <!-- The next rule specify the Callback for APIs that add/remove/update files matching pathspec  -->
+    <rule>
+      <match>
+          <identifier name="git_index_matched_path_cb"/>
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
+
  
     <!-- And the rest should be ignored -->
     <rule>

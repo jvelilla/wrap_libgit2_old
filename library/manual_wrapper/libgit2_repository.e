@@ -18,7 +18,8 @@ inherit
 			git_repository_open_bare as git_repository_open_bare_api,
 			git_repository_discover as git_repository_discover_api,
 			git_repository_path as git_repository_path_api,
-			git_repository_head as git_repository_head_api
+			git_repository_head as git_repository_head_api,
+			git_repository_index as git_repository_index_api
 		end
 
 feature -- Access
@@ -126,5 +127,16 @@ feature -- Access
 				a_out.make_by_pointer (l_ptr)
 			end
 		end
+
+	git_repository_index (a_out: GIT_INDEX_STRUCT_API; repo: GIT_REPOSITORY_STRUCT_API): INTEGER
+		local
+			l_ptr: POINTER
+		do
+			Result := c_git_repository_index ($l_ptr, repo.item)
+			if l_ptr /= default_pointer then
+				a_out.make_by_pointer (l_ptr)
+			end
+		end
+
 
 end
