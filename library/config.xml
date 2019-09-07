@@ -141,6 +141,17 @@
       </wrapper>
     </rule>
 
+    <!-- The next rule specify the Git index stage states -->
+    <rule>
+      <match>
+        <identifier name="git_index_stage_t*"/>
+        <type name="enum"/>  
+      </match>
+       <wrapper type="default">
+      </wrapper>
+  </rule>
+
+
     <!-- The next rule specify the git_oid definitions to be wrapped -->
     <rule>
       <match>
@@ -464,6 +475,41 @@
        <wrapper type="default">
       </wrapper>
     </rule>
+
+       <!-- The next rule specify the Indexer structures  -->
+    <rule>
+      <match>
+          <identifier name="git_indexer_progress"/>
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
+
+
+    <!-- The next rule specify the Indexer functions  -->
+    <rule>
+      <match>
+          <identifier name="git_indexer_.*"/>
+          <type name="function"/>  
+      </match>
+       <wrapper type="default">
+          <class_name name="GIT_INDEXER"/>  
+      </wrapper>
+    </rule>
+
+
+ 
+
+ 
+    <!-- The next rule specify the Callback for APIs that add/remove/update files matching pathspec  -->
+    <rule>
+      <match>
+          <identifier name="git_indexer_progress_cb"/>
+      </match>
+       <wrapper type="default">
+      </wrapper>
+    </rule>
+
 
  
     <!-- And the rest should be ignored -->
